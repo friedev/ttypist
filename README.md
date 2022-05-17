@@ -5,27 +5,36 @@ A terminal-based typing test written in C using ncurses, with a wrapper script w
 ## Dependencies
 
 - C
-- Make
 - ncurses
+- GNU make
 - POSIX-compliant shell
+
+## Compiling
+
+```sh
+make
+```
 
 ## Installation
 
-Clone the repo and run `make`.
-No `install` target is provided at this time.
+As root:
+
+```sh
+make install
+```
 
 ## Usage
 
 To use a custom string for the typing test:
 
 ```sh
-./ttypist "my custom string"
+ttypist "my custom string"
 ```
 
 To generate a random string of 10 words from a word list:
 
 ```sh
-./ttypist.sh /path/to/words.txt 10
+ttypist-gen /path/to/words.txt 10
 ```
 
 ## Word Lists

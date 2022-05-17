@@ -1,1 +1,3 @@
 ttypist
+*.o
+*.d
