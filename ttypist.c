@@ -1,12 +1,13 @@
 #include <ctype.h>
 #include <ncurses.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 // curses key code for escape, not defined anywhere?
-#define KEY_ESCAPE 27
+enum { KEY_ESCAPE = 27 };
 
 // Color pairs
 enum {
@@ -18,13 +19,13 @@ enum {
 };
 
 // Globals
-char *TEST_STR;
-char *INPUT_STR;
-size_t TEST_STR_LEN;
-size_t INPUT_IDX;
+static char *TEST_STR;
+static char *INPUT_STR;
+static size_t TEST_STR_LEN;
+static size_t INPUT_IDX;
 
 // Start curses with desired settings
-void init_curses() {
+static void init_curses(void) {
     initscr();
     cbreak();
     keypad(stdscr, true);
@@ -33,7 +34,7 @@ void init_curses() {
 }
 
 // Initialize curses color pairs
-void init_colors() {
+static void init_colors(void) {
     start_color();
     use_default_colors();
     init_pair(PAIR_CORRECT, COLOR_GREEN, -1);
@@ -42,10 +43,10 @@ void init_colors() {
 }
 
 // Draw the test string with the input string overlaid
-void draw() {
+static void draw(void) {
     for (size_t i = 0; i < TEST_STR_LEN; i++) {
-        int color_pair;
-        char display_char;
+        int color_pair = 0;
+        char display_char = 0;
 
         if (i >= INPUT_IDX) {
             color_pair = PAIR_UNTYPED;
@@ -72,7 +73,7 @@ void draw() {
 
 // Handle an inputted key code
 // Return true if execution should continue, else false
-bool handle_input(int input) {
+static bool handle_input(int input) {
     // Any printable characters typed are added to the input string
     if (isprint(input)) {
         INPUT_STR[INPUT_IDX] = (char)input;
@@ -100,7 +101,7 @@ bool handle_input(int input) {
 // Backspaced errors are not tracked or penalized
 // WPM is not reduced by errors
 // This behavior is subject to change
-void print_results(time_t start_time, time_t end_time) {
+static void print_results(time_t start_time, time_t end_time) {
     time_t seconds = end_time - start_time;
     double words = (double)TEST_STR_LEN / 5.0;
     double minutes = (double)seconds / 60.0;
