@@ -24,8 +24,7 @@ size_t TEST_STR_LEN;
 size_t INPUT_IDX;
 
 // Start curses with desired settings
-void init_curses()
-{
+void init_curses() {
     initscr();
     cbreak();
     keypad(stdscr, true);
@@ -34,8 +33,7 @@ void init_curses()
 }
 
 // Initialize curses color pairs
-void init_colors()
-{
+void init_colors() {
     start_color();
     use_default_colors();
     init_pair(PAIR_CORRECT, COLOR_GREEN, -1);
@@ -44,8 +42,7 @@ void init_colors()
 }
 
 // Draw the test string with the input string overlaid
-void draw()
-{
+void draw() {
     for (size_t i = 0; i < TEST_STR_LEN; i++) {
         int color_pair;
         char display_char;
@@ -75,11 +72,10 @@ void draw()
 
 // Handle an inputted key code
 // Return true if execution should continue, else false
-bool handle_input(int input)
-{
+bool handle_input(int input) {
     // Any printable characters typed are added to the input string
     if (isprint(input)) {
-        INPUT_STR[INPUT_IDX] = (char) input;
+        INPUT_STR[INPUT_IDX] = (char)input;
         INPUT_IDX++;
         return true;
     }
@@ -104,11 +100,10 @@ bool handle_input(int input)
 // Backspaced errors are not tracked or penalized
 // WPM is not reduced by errors
 // This behavior is subject to change
-void print_results(time_t start_time, time_t end_time)
-{
+void print_results(time_t start_time, time_t end_time) {
     time_t seconds = end_time - start_time;
-    double words = (double) TEST_STR_LEN / 5.0;
-    double minutes = (double) seconds / 60.0;
+    double words = (double)TEST_STR_LEN / 5.0;
+    double minutes = (double)seconds / 60.0;
     double wpm = words / minutes;
 
     int mistakes = 0;
@@ -118,14 +113,11 @@ void print_results(time_t start_time, time_t end_time)
         }
     }
 
-    double accuracy = (double)(TEST_STR_LEN - mistakes)
-        / (double) TEST_STR_LEN
-        * 100.0;
+    double accuracy =
+        (double)(TEST_STR_LEN - mistakes) / (double)TEST_STR_LEN * 100.0;
 
     printf(
-        "Words Per Minute: %.f\n"
-        "Mistakes: %d\n"
-        "Accuracy: %.f%%\n",
+        "Words Per Minute: %.f\n" "Mistakes: %d\n" "Accuracy: %.f%%\n",
         wpm,
         mistakes,
         accuracy
@@ -133,8 +125,7 @@ void print_results(time_t start_time, time_t end_time)
 }
 
 // Parse arguments and run main loop
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     // Do not silently ignore extra arguments
     if (argc != 2) {
         printf("Usage: %s test_string\n", argv[0]);
